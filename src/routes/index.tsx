@@ -271,12 +271,12 @@ function DeepFeatures() {
     <section id="pricing" className="mx-auto max-w-6xl px-4 md:px-6 py-16 md:py-24">
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">The rest of it</p>
       <h2 className="mt-3 font-serif text-3xl md:text-4xl max-w-xl">Everything a serious note-taker needs.</h2>
-      <div className="mt-10 grid gap-px bg-hairline rounded-lg overflow-hidden border border-hairline">
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-hairline rounded-lg overflow-hidden border border-hairline">
         {feats.map((f) => (
-          <div key={f.title} className="bg-card p-6 sm:col-span-1 md:col-span-1 lg:col-span-1" style={{ gridColumn: "auto" }}>
-            <div className="grid" style={{ gridTemplateColumns: "auto 1fr", gap: "1rem" }}>
+          <div key={f.title} className="bg-card p-6">
+            <div className="grid grid-cols-[auto_1fr] gap-4">
               <f.icon className="size-5 text-accent mt-0.5" aria-hidden />
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-sm font-semibold">{f.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{f.body}</p>
               </div>
@@ -284,11 +284,6 @@ function DeepFeatures() {
           </div>
         ))}
       </div>
-      <style>{`
-        section#pricing > div.grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-        @media (min-width: 640px) { section#pricing > div.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (min-width: 1024px) { section#pricing > div.grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-      `}</style>
       <div className="mt-14 grid gap-6 md:grid-cols-2 rounded-lg border border-hairline p-8 bg-surface-1">
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Pro</p>
