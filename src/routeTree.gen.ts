@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppTasksRouteImport } from './routes/app.tasks'
 import { Route as AppRecordRouteImport } from './routes/app.record'
+import { Route as AppImportRouteImport } from './routes/app.import'
 import { Route as AppAskRouteImport } from './routes/app.ask'
 import { Route as AppSessionsIdRouteImport } from './routes/app.sessions.$id'
 
@@ -42,6 +43,11 @@ const AppRecordRoute = AppRecordRouteImport.update({
   path: '/record',
   getParentRoute: () => AppRoute,
 } as any)
+const AppImportRoute = AppImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAskRoute = AppAskRouteImport.update({
   id: '/ask',
   path: '/ask',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
   '/app/tasks': typeof AppTasksRoute
   '/app/': typeof AppIndexRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
   '/app/tasks': typeof AppTasksRoute
   '/app': typeof AppIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
   '/app/tasks': typeof AppTasksRoute
   '/app/': typeof AppIndexRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/ask'
+    | '/app/import'
     | '/app/record'
     | '/app/tasks'
     | '/app/'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/app/ask'
+    | '/app/import'
     | '/app/record'
     | '/app/tasks'
     | '/app'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/ask'
+    | '/app/import'
     | '/app/record'
     | '/app/tasks'
     | '/app/'
@@ -151,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecordRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/import': {
+      id: '/app/import'
+      path: '/import'
+      fullPath: '/app/import'
+      preLoaderRoute: typeof AppImportRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/ask': {
       id: '/app/ask'
       path: '/ask'
@@ -170,6 +189,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAskRoute: typeof AppAskRoute
+  AppImportRoute: typeof AppImportRoute
   AppRecordRoute: typeof AppRecordRoute
   AppTasksRoute: typeof AppTasksRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -178,6 +198,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAskRoute: AppAskRoute,
+  AppImportRoute: AppImportRoute,
   AppRecordRoute: AppRecordRoute,
   AppTasksRoute: AppTasksRoute,
   AppIndexRoute: AppIndexRoute,
