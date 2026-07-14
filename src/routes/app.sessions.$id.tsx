@@ -56,7 +56,7 @@ export const Route = createFileRoute("/app/sessions/$id")({
 type ViewMode = "speaker" | "polished" | "timestamp";
 
 function SessionDetail() {
-  const { session } = Route.useLoaderData();
+  const { session } = Route.useLoaderData() as { session: Session };
   const [title, setTitle] = useState(session.title);
   const [savedFlash, setSavedFlash] = useState(false);
   const [tldr, setTldr] = useState(session.tldr);

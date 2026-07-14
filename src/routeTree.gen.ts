@@ -13,6 +13,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppRecordRouteImport } from './routes/app.record'
+import { Route as AppSessionsIdRouteImport } from './routes/app.sessions.$id'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -34,17 +35,24 @@ const AppRecordRoute = AppRecordRouteImport.update({
   path: '/record',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSessionsIdRoute = AppSessionsIdRouteImport.update({
+  id: '/sessions/$id',
+  path: '/sessions/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/record': typeof AppRecordRoute
   '/app/': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/record': typeof AppRecordRoute
   '/app': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -52,13 +60,14 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/record': typeof AppRecordRoute
   '/app/': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/record' | '/app/'
+  fullPaths: '/' | '/app' | '/app/record' | '/app/' | '/app/sessions/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/record' | '/app'
-  id: '__root__' | '/' | '/app' | '/app/record' | '/app/'
+  to: '/' | '/app/record' | '/app' | '/app/sessions/$id'
+  id: '__root__' | '/' | '/app' | '/app/record' | '/app/' | '/app/sessions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,17 +105,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRecordRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/sessions/$id': {
+      id: '/app/sessions/$id'
+      path: '/sessions/$id'
+      fullPath: '/app/sessions/$id'
+      preLoaderRoute: typeof AppSessionsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppRecordRoute: typeof AppRecordRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppSessionsIdRoute: typeof AppSessionsIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppRecordRoute: AppRecordRoute,
   AppIndexRoute: AppIndexRoute,
+  AppSessionsIdRoute: AppSessionsIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
