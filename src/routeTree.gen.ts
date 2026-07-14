@@ -9,38 +9,157 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as STokenRouteImport } from './routes/s.$token'
+import { Route as AppTasksRouteImport } from './routes/app.tasks'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppRecordRouteImport } from './routes/app.record'
+import { Route as AppImportRouteImport } from './routes/app.import'
+import { Route as AppAskRouteImport } from './routes/app.ask'
+import { Route as AppSessionsIdRouteImport } from './routes/app.sessions.$id'
 
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const STokenRoute = STokenRouteImport.update({
+  id: '/s/$token',
+  path: '/s/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppTasksRoute = AppTasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRecordRoute = AppRecordRouteImport.update({
+  id: '/record',
+  path: '/record',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppImportRoute = AppImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAskRoute = AppAskRouteImport.update({
+  id: '/ask',
+  path: '/ask',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSessionsIdRoute = AppSessionsIdRouteImport.update({
+  id: '/sessions/$id',
+  path: '/sessions/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
+  '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
+  '/app/': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
+  '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
+  '/app': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/ask': typeof AppAskRoute
+  '/app/import': typeof AppImportRoute
+  '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
+  '/app/': typeof AppIndexRoute
+  '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/ask'
+    | '/app/import'
+    | '/app/record'
+    | '/app/settings'
+    | '/app/tasks'
+    | '/s/$token'
+    | '/app/'
+    | '/app/sessions/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/ask'
+    | '/app/import'
+    | '/app/record'
+    | '/app/settings'
+    | '/app/tasks'
+    | '/s/$token'
+    | '/app'
+    | '/app/sessions/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/ask'
+    | '/app/import'
+    | '/app/record'
+    | '/app/settings'
+    | '/app/tasks'
+    | '/s/$token'
+    | '/app/'
+    | '/app/sessions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  STokenRoute: typeof STokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +167,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/s/$token': {
+      id: '/s/$token'
+      path: '/s/$token'
+      fullPath: '/s/$token'
+      preLoaderRoute: typeof STokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/tasks': {
+      id: '/app/tasks'
+      path: '/tasks'
+      fullPath: '/app/tasks'
+      preLoaderRoute: typeof AppTasksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/record': {
+      id: '/app/record'
+      path: '/record'
+      fullPath: '/app/record'
+      preLoaderRoute: typeof AppRecordRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/import': {
+      id: '/app/import'
+      path: '/import'
+      fullPath: '/app/import'
+      preLoaderRoute: typeof AppImportRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/ask': {
+      id: '/app/ask'
+      path: '/ask'
+      fullPath: '/app/ask'
+      preLoaderRoute: typeof AppAskRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/sessions/$id': {
+      id: '/app/sessions/$id'
+      path: '/sessions/$id'
+      fullPath: '/app/sessions/$id'
+      preLoaderRoute: typeof AppSessionsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAskRoute: typeof AppAskRoute
+  AppImportRoute: typeof AppImportRoute
+  AppRecordRoute: typeof AppRecordRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppTasksRoute: typeof AppTasksRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppSessionsIdRoute: typeof AppSessionsIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAskRoute: AppAskRoute,
+  AppImportRoute: AppImportRoute,
+  AppRecordRoute: AppRecordRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppTasksRoute: AppTasksRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppSessionsIdRoute: AppSessionsIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  STokenRoute: STokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
