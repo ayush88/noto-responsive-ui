@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as STokenRouteImport } from './routes/s.$token'
 import { Route as AppTasksRouteImport } from './routes/app.tasks'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppRecordRouteImport } from './routes/app.record'
 import { Route as AppImportRouteImport } from './routes/app.import'
 import { Route as AppAskRouteImport } from './routes/app.ask'
@@ -33,9 +35,19 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const STokenRoute = STokenRouteImport.update({
+  id: '/s/$token',
+  path: '/s/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppTasksRoute = AppTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const AppRecordRoute = AppRecordRouteImport.update({
@@ -65,7 +77,9 @@ export interface FileRoutesByFullPath {
   '/app/ask': typeof AppAskRoute
   '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
   '/app/': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
@@ -74,7 +88,9 @@ export interface FileRoutesByTo {
   '/app/ask': typeof AppAskRoute
   '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
   '/app': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
@@ -85,7 +101,9 @@ export interface FileRoutesById {
   '/app/ask': typeof AppAskRoute
   '/app/import': typeof AppImportRoute
   '/app/record': typeof AppRecordRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/tasks': typeof AppTasksRoute
+  '/s/$token': typeof STokenRoute
   '/app/': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
@@ -97,7 +115,9 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/import'
     | '/app/record'
+    | '/app/settings'
     | '/app/tasks'
+    | '/s/$token'
     | '/app/'
     | '/app/sessions/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -106,7 +126,9 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/import'
     | '/app/record'
+    | '/app/settings'
     | '/app/tasks'
+    | '/s/$token'
     | '/app'
     | '/app/sessions/$id'
   id:
@@ -116,7 +138,9 @@ export interface FileRouteTypes {
     | '/app/ask'
     | '/app/import'
     | '/app/record'
+    | '/app/settings'
     | '/app/tasks'
+    | '/s/$token'
     | '/app/'
     | '/app/sessions/$id'
   fileRoutesById: FileRoutesById
@@ -124,6 +148,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  STokenRoute: typeof STokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -149,11 +174,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/s/$token': {
+      id: '/s/$token'
+      path: '/s/$token'
+      fullPath: '/s/$token'
+      preLoaderRoute: typeof STokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/tasks': {
       id: '/app/tasks'
       path: '/tasks'
       fullPath: '/app/tasks'
       preLoaderRoute: typeof AppTasksRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/record': {
@@ -191,6 +230,7 @@ interface AppRouteChildren {
   AppAskRoute: typeof AppAskRoute
   AppImportRoute: typeof AppImportRoute
   AppRecordRoute: typeof AppRecordRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppTasksRoute: typeof AppTasksRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSessionsIdRoute: typeof AppSessionsIdRoute
@@ -200,6 +240,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAskRoute: AppAskRoute,
   AppImportRoute: AppImportRoute,
   AppRecordRoute: AppRecordRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppTasksRoute: AppTasksRoute,
   AppIndexRoute: AppIndexRoute,
   AppSessionsIdRoute: AppSessionsIdRoute,
@@ -210,6 +251,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  STokenRoute: STokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
