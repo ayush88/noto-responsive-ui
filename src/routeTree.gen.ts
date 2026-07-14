@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppTasksRouteImport } from './routes/app.tasks'
 import { Route as AppRecordRouteImport } from './routes/app.record'
+import { Route as AppAskRouteImport } from './routes/app.ask'
 import { Route as AppSessionsIdRouteImport } from './routes/app.sessions.$id'
 
 const AppRoute = AppRouteImport.update({
@@ -30,9 +32,19 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppTasksRoute = AppTasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRecordRoute = AppRecordRouteImport.update({
   id: '/record',
   path: '/record',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAskRoute = AppAskRouteImport.update({
+  id: '/ask',
+  path: '/ask',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSessionsIdRoute = AppSessionsIdRouteImport.update({
@@ -44,13 +56,17 @@ const AppSessionsIdRoute = AppSessionsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/ask': typeof AppAskRoute
   '/app/record': typeof AppRecordRoute
+  '/app/tasks': typeof AppTasksRoute
   '/app/': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/ask': typeof AppAskRoute
   '/app/record': typeof AppRecordRoute
+  '/app/tasks': typeof AppTasksRoute
   '/app': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
@@ -58,16 +74,39 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/ask': typeof AppAskRoute
   '/app/record': typeof AppRecordRoute
+  '/app/tasks': typeof AppTasksRoute
   '/app/': typeof AppIndexRoute
   '/app/sessions/$id': typeof AppSessionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/record' | '/app/' | '/app/sessions/$id'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/ask'
+    | '/app/record'
+    | '/app/tasks'
+    | '/app/'
+    | '/app/sessions/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/record' | '/app' | '/app/sessions/$id'
-  id: '__root__' | '/' | '/app' | '/app/record' | '/app/' | '/app/sessions/$id'
+  to:
+    | '/'
+    | '/app/ask'
+    | '/app/record'
+    | '/app/tasks'
+    | '/app'
+    | '/app/sessions/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/ask'
+    | '/app/record'
+    | '/app/tasks'
+    | '/app/'
+    | '/app/sessions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -98,11 +137,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/tasks': {
+      id: '/app/tasks'
+      path: '/tasks'
+      fullPath: '/app/tasks'
+      preLoaderRoute: typeof AppTasksRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/record': {
       id: '/app/record'
       path: '/record'
       fullPath: '/app/record'
       preLoaderRoute: typeof AppRecordRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/ask': {
+      id: '/app/ask'
+      path: '/ask'
+      fullPath: '/app/ask'
+      preLoaderRoute: typeof AppAskRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/sessions/$id': {
@@ -116,13 +169,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAskRoute: typeof AppAskRoute
   AppRecordRoute: typeof AppRecordRoute
+  AppTasksRoute: typeof AppTasksRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSessionsIdRoute: typeof AppSessionsIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAskRoute: AppAskRoute,
   AppRecordRoute: AppRecordRoute,
+  AppTasksRoute: AppTasksRoute,
   AppIndexRoute: AppIndexRoute,
   AppSessionsIdRoute: AppSessionsIdRoute,
 }
