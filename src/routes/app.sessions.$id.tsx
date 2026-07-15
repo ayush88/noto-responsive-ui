@@ -53,7 +53,7 @@ export const Route = createFileRoute("/app/sessions/$id")({
   component: SessionDetail,
 });
 
-type ViewMode = "speaker" | "polished" | "timestamp";
+type Density = "comfortable" | "compact";
 
 function SessionDetail() {
   const { session } = Route.useLoaderData() as { session: Session };
@@ -63,7 +63,9 @@ function SessionDetail() {
   const [keyPoints, setKeyPoints] = useState(session.keyPoints);
   const [actions, setActions] = useState(session.actionItems);
   const [regenerating, setRegenerating] = useState(false);
-  const [view, setView] = useState<ViewMode>("speaker");
+  const [density, setDensity] = useState<Density>("comfortable");
+  const [speed, setSpeed] = useState("1");
+
   const [find, setFind] = useState("");
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0.18);
@@ -249,25 +251,45 @@ function SessionDetail() {
 
           {/* Audio + transcript */}
           <section className="rounded-lg border border-hairline bg-card" ref={audioRef}>
-            <div className="border-b border-hairline px-5 py-4">
-              <div className="flex items-center gap-4">
-                <button onClick={() => setPlaying((p) => !p)} className="grid size-11 place-items-center rounded-full bg-foreground text-background hover:opacity-90" aria-label={playing ? "Pause" : "Play"}>
-                  {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
-                </button>
-                <button aria-label="Skip back 15s" className="p-2 text-muted-foreground hover:text-foreground"><SkipBack className="size-4" /></button>
-                <button aria-label="Skip forward 15s" className="p-2 text-muted-foreground hover:text-foreground"><SkipForward className="size-4" /></button>
-                <div className="flex-1">
+            <div className="border-b border-hairline px-4 md:px-5 py-4">
+              <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+                <div className="flex items-center gap-1 shrink-0">
+                  <button onClick={() => setPlaying((p) => !p)} className="grid size-11 place-items-center rounded-full bg-foreground text-background hover:opacity-90" aria-label={playing ? "Pause" : "Play"}>
+                    {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
+                  </button>
+                  <button aria-label="Skip back 15s" className="hidden sm:inline-flex p-2 text-muted-foreground hover:text-foreground"><SkipBack className="size-4" /></button>
+                  <button aria-label="Skip forward 15s" className="hidden sm:inline-flex p-2 text-muted-foreground hover:text-foreground"><SkipForward className="size-4" /></button>
+                </div>
+                <div className="min-w-0">
                   <Waveform seed={session.id} bars={80} progress={progress} height={40} />
                 </div>
-                <span className="font-mono tabular text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="hidden sm:inline font-mono tabular text-xs text-muted-foreground">
+                    {formatTC(Math.round(session.durationSec * progress))} / {formatTC(session.durationSec)}
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        aria-label="Playback speed"
+                        className="inline-flex h-8 items-center rounded-md border border-hairline px-2 font-mono tabular text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        {speed}×
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="min-w-[7rem]">
+                      {["0.75", "1", "1.25", "1.5", "2"].map((v) => (
+                        <DropdownMenuItem key={v} onSelect={() => setSpeed(v)} className="font-mono tabular">
+                          {v}×{speed === v && <Check className="ml-auto size-3.5" />}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-3 sm:hidden">
+                <span className="font-mono tabular text-[11px] text-muted-foreground">
                   {formatTC(Math.round(session.durationSec * progress))} / {formatTC(session.durationSec)}
                 </span>
-                <Select defaultValue="1">
-                  <SelectTrigger className="w-[72px] h-8"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {["0.75","1","1.25","1.5","2"].map((v) => <SelectItem key={v} value={v}>{v}x</SelectItem>)}
-                  </SelectContent>
-                </Select>
               </div>
               <input
                 type="range" min={0} max={1000} value={progress * 1000}
@@ -277,17 +299,24 @@ function SessionDetail() {
               />
             </div>
 
-            <div className="flex items-center justify-between gap-3 border-b border-hairline px-5 py-3">
-              <Tabs value={view} onValueChange={(v) => setView(v as ViewMode)}>
-                <TabsList>
-                  <TabsTrigger value="speaker">Speaker</TabsTrigger>
-                  <TabsTrigger value="polished">Polished</TabsTrigger>
-                  <TabsTrigger value="timestamp">Timestamped</TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline px-4 md:px-5 py-3">
+              <div className="inline-flex rounded-md border border-hairline bg-surface-1 p-0.5">
+                {(["comfortable", "compact"] as const).map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setDensity(d)}
+                    className={cn(
+                      "px-3 h-8 text-xs capitalize rounded",
+                      density === d ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
               <div className="relative">
                 <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
-                <Input value={find} onChange={(e) => setFind(e.target.value)} placeholder="Find in transcript" className="pl-8 h-8 w-56" />
+                <Input value={find} onChange={(e) => setFind(e.target.value)} placeholder="Find in transcript" className="pl-8 h-8 w-48 sm:w-56" />
                 {find && (
                   <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-mono text-muted-foreground">
                     {filteredSegments.length}
@@ -296,24 +325,25 @@ function SessionDetail() {
               </div>
             </div>
 
-            <div className="p-5 space-y-3 max-h-[600px] overflow-y-auto">
+            <div className={cn("px-4 md:px-5 overflow-y-auto max-h-[600px]", density === "compact" ? "py-3 space-y-1.5" : "py-5 space-y-3")}>
               {filteredSegments.map((seg) => {
                 const speaker = session.speakers.find((s) => s.id === seg.speakerId) ?? session.speakers[0];
                 return (
-                  <div key={seg.id} className="group flex gap-4">
-                    {view !== "polished" && (
-                      <div className="w-24 shrink-0">
-                        {view === "timestamp" ? (
-                          <span className="font-mono tabular text-[11px] text-muted-foreground">{formatTC(seg.start)}</span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 text-xs">
-                            <span className="size-2 rounded-full" style={{ background: speaker.color }} />
-                            <span className="text-foreground/80">{speaker.name}</span>
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    <p className={cn("text-[15px] leading-relaxed flex-1", find && seg.text.toLowerCase().includes(find.toLowerCase()) && "bg-accent/10 rounded")}>
+                  <div key={seg.id} className={cn("group grid gap-3 sm:gap-4", density === "compact" ? "grid-cols-[auto_1fr]" : "grid-cols-[auto_1fr] sm:grid-cols-[10rem_1fr]")}>
+                    <div className={cn("flex items-center gap-2 min-w-0", density === "compact" ? "" : "sm:flex-col sm:items-start sm:gap-1")}>
+                      <span className="inline-flex items-center gap-1.5 text-xs">
+                        <span className="size-2 shrink-0 rounded-full" style={{ background: speaker.color }} />
+                        <span className="text-foreground/80 truncate">{speaker.name}</span>
+                      </span>
+                      <button
+                        onClick={() => setProgress(seg.start / session.durationSec)}
+                        className="font-mono tabular text-[11px] text-muted-foreground hover:text-accent shrink-0"
+                        aria-label={`Seek to ${formatTC(seg.start)}`}
+                      >
+                        {formatTC(seg.start)}
+                      </button>
+                    </div>
+                    <p className={cn("leading-relaxed flex-1", density === "compact" ? "text-[13.5px]" : "text-[15px]", find && seg.text.toLowerCase().includes(find.toLowerCase()) && "bg-accent/10 rounded")}>
                       {seg.text}
                     </p>
                   </div>
@@ -324,6 +354,7 @@ function SessionDetail() {
               )}
             </div>
           </section>
+
 
           {/* Footer actions */}
           <div className="flex flex-wrap items-center gap-2 pb-6">

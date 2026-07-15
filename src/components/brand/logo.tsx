@@ -24,7 +24,10 @@ export function Logo({ size = 24, className }: { size?: number; className?: stri
 
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={`font-serif text-[1.35rem] leading-none tracking-tight ${className ?? ""}`}>
+    <span
+      className={`text-[1.05rem] leading-none tracking-[-0.03em] font-bold ${className ?? ""}`}
+      style={{ fontFeatureSettings: '"ss01","cv11"' }}
+    >
       NoTo<span className="text-accent">.</span>
     </span>
   );

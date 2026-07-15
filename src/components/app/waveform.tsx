@@ -34,7 +34,7 @@ export function Waveform({
 
   return (
     <div
-      className={cn("flex items-center gap-[3px]", className)}
+      className={cn("flex items-center gap-[3px] w-full min-w-0", className)}
       style={{ height }}
       aria-hidden
     >
@@ -44,7 +44,7 @@ export function Waveform({
           <span
             key={i}
             className={cn(
-              "w-[3px] rounded-full transition-[height,background-color] duration-200",
+              "flex-1 min-w-[2px] rounded-full transition-[height,background-color] duration-200",
               passed ? "bg-accent" : "bg-foreground/25",
               playing && "animate-pulse-dot",
             )}
@@ -57,4 +57,5 @@ export function Waveform({
       })}
     </div>
   );
+
 }

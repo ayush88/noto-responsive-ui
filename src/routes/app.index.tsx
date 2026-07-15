@@ -120,45 +120,44 @@ function Library() {
       </section>
 
       {/* Insights this week */}
-      <section className="mt-8 rounded-lg border border-hairline bg-card p-6">
-        <div className="flex items-start gap-4">
-          <div className="inline-flex size-9 items-center justify-center rounded-md bg-accent/10 text-accent shrink-0">
-            <Sparkles className="size-4" aria-hidden />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <h2 className="font-serif text-xl">Insights this week</h2>
-              <PendingButton
-                variant="ghost"
-                size="sm"
-                pendingLabel="Regenerating…"
-                onAction={async () => {
-                  setRegenerating(true);
-                  await new Promise((r) => setTimeout(r, 900));
-                  setInsightSummary(insights.summary + " Your median session length dropped from 34 to 28 minutes.");
-                  setRegenerating(false);
-                }}
-                toastMessage="Insights refreshed"
-              >
-                Regenerate
-              </PendingButton>
+      <section className="mt-8 rounded-lg border border-hairline bg-card p-5 md:p-6">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent">
+              <Sparkles className="size-4" aria-hidden />
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-3">
-              <Stat label="Hours captured" value={`${insights.hoursCaptured}h`} />
-              <Stat label="Sessions" value={String(insights.sessionsCount)} />
-              <Stat label="Top tags" value={insights.topTags.slice(0, 2).join(", ")} />
-            </div>
-            <p className={cn("mt-4 text-sm text-muted-foreground leading-relaxed", regenerating && "opacity-50")}>
-              {insightSummary}
-            </p>
+            <h2 className="truncate text-lg md:text-xl font-semibold">Insights this week</h2>
           </div>
+          <PendingButton
+            variant="ghost"
+            size="sm"
+            pendingLabel="Regenerating…"
+            onAction={async () => {
+              setRegenerating(true);
+              await new Promise((r) => setTimeout(r, 900));
+              setInsightSummary(insights.summary + " Your median session length dropped from 34 to 28 minutes.");
+              setRegenerating(false);
+            }}
+            toastMessage="Insights refreshed"
+          >
+            Regenerate
+          </PendingButton>
         </div>
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Stat label="Hours captured" value={`${insights.hoursCaptured}h`} />
+          <Stat label="Sessions" value={String(insights.sessionsCount)} />
+          <Stat label="Top tags" value={insights.topTags.slice(0, 2).join(", ")} />
+        </div>
+        <p className={cn("mt-5 text-sm text-muted-foreground leading-relaxed", regenerating && "opacity-50")}>
+          {insightSummary}
+        </p>
       </section>
+
 
       {/* Search + filters */}
       <section className="mt-10">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-3">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-3">
+          <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
             <Input
               value={q}
@@ -167,7 +166,7 @@ function Library() {
               className="pl-9 h-11"
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <SegmentedMode value={mode} onChange={setMode} />
             <Tabs value={tab} onValueChange={(v) => setTab(v as "active" | "bin")}>
               <TabsList>
@@ -177,6 +176,7 @@ function Library() {
             </Tabs>
           </div>
         </div>
+
         {allTags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {allTags.map((t) => {
@@ -273,12 +273,13 @@ function Library() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-hairline bg-surface-1 p-3">
+    <div className="rounded-md border border-hairline bg-surface-1 p-3 min-w-0">
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 font-serif text-2xl tabular">{value}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight tabular truncate">{value}</p>
     </div>
   );
 }
+
 
 function SegmentedMode({ value, onChange }: { value: Mode; onChange: (m: Mode) => void }) {
   const opts: Mode[] = ["keyword", "semantic", "hybrid"];

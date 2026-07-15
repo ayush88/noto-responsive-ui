@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <MarketingHeader />
       <Hero />
       <Triptych />
@@ -52,21 +52,24 @@ function Landing() {
   );
 }
 
+
 function MarketingHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <Logo size={22} />
-          <Wordmark />
-        </Link>
-        <nav className="ml-6 hidden md:flex items-center gap-5 text-sm text-muted-foreground">
-          <a href="#features" className="hover:text-foreground">Product</a>
-          <a href="#privacy" className="hover:text-foreground">Privacy</a>
-          <a href="#pricing" className="hover:text-foreground">Pricing</a>
-          <a href="#faq" className="hover:text-foreground">FAQ</a>
-        </nav>
-        <div className="ml-auto flex items-center gap-2">
+      <div className="mx-auto grid h-14 max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 md:px-6">
+        <div className="flex items-center gap-4 min-w-0">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <Logo size={22} />
+            <Wordmark />
+          </Link>
+          <nav className="ml-2 hidden md:flex items-center gap-5 text-sm text-muted-foreground">
+            <a href="#features" className="hover:text-foreground">Product</a>
+            <a href="#privacy" className="hover:text-foreground">Privacy</a>
+            <a href="#pricing" className="hover:text-foreground">Pricing</a>
+            <a href="#faq" className="hover:text-foreground">FAQ</a>
+          </nav>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
           <ThemeToggle />
           <Link
             to="/app"
@@ -76,7 +79,7 @@ function MarketingHeader() {
           </Link>
           <Link
             to="/app"
-            className="inline-flex h-9 items-center rounded-md bg-foreground px-3.5 text-sm font-medium text-background hover:opacity-90"
+            className="inline-flex h-9 items-center rounded-md bg-foreground px-3.5 text-sm font-semibold text-background hover:opacity-90"
           >
             Get NoTo
           </Link>
@@ -86,32 +89,33 @@ function MarketingHeader() {
   );
 }
 
+
 function Hero() {
   return (
-    <section className="mx-auto max-w-6xl px-4 md:px-6 pt-16 md:pt-24 pb-20">
-      <div className="grid gap-12 lg:grid-cols-[1.15fr_1fr] items-center">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+    <section className="mx-auto max-w-6xl px-4 md:px-6 pt-12 md:pt-24 pb-16 md:pb-20">
+      <div className="grid gap-10 md:gap-12 lg:grid-cols-[1.15fr_1fr] items-center">
+        <div className="min-w-0">
+          <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
             Your second brain, quietly
           </p>
-          <h1 className="mt-5 font-serif text-[clamp(2.75rem,6vw,5rem)] leading-[0.98] tracking-tight">
+          <h1 className="mt-5 text-[clamp(2.25rem,8vw,5rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
             Never forget
             <br />
-            <span className="italic">anything.</span>
+            <span className="italic font-medium">anything.</span>
           </h1>
           <p className="mt-6 max-w-lg text-base md:text-lg text-muted-foreground leading-relaxed">
             NoTo records your meetings, lectures and 1:1s, transcribes them on-device with Whisper, and lets you chat with your entire memory library. Bring your own LLM key. Your audio never leaves your browser.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <button className="inline-flex h-11 items-center gap-2 rounded-md border border-hairline bg-surface-1 px-4 text-sm font-medium hover:bg-surface-2 transition-colors">
+          <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
+            <button className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-hairline bg-surface-1 px-4 text-sm font-medium hover:bg-surface-2 transition-colors">
               <GoogleGlyph /> Continue with Google
             </button>
-            <button className="inline-flex h-11 items-center gap-2 rounded-md border border-hairline bg-surface-1 px-4 text-sm font-medium hover:bg-surface-2 transition-colors">
+            <button className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-hairline bg-surface-1 px-4 text-sm font-medium hover:bg-surface-2 transition-colors">
               <AppleGlyph /> Continue with Apple
             </button>
             <Link
               to="/app"
-              className="inline-flex h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+              className="inline-flex h-11 items-center justify-center gap-1 rounded-md px-3 text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               Continue with email <ArrowRight className="size-4" />
             </Link>
@@ -126,9 +130,10 @@ function Hero() {
   );
 }
 
+
 function HeroMock() {
   return (
-    <div className="relative">
+    <div className="relative min-w-0 w-full">
       <div className="absolute -inset-4 -z-10 rounded-3xl bg-surface-2/60 blur-2xl" aria-hidden />
       <div className="rounded-xl border border-hairline bg-card p-5 shadow-sm">
         <div className="flex items-center justify-between">
