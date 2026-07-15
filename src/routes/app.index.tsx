@@ -272,12 +272,13 @@ function Library() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-hairline bg-surface-1 p-3">
+    <div className="rounded-md border border-hairline bg-surface-1 p-3 min-w-0">
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 font-serif text-2xl tabular">{value}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight tabular truncate">{value}</p>
     </div>
   );
 }
+
 
 function SegmentedMode({ value, onChange }: { value: Mode; onChange: (m: Mode) => void }) {
   const opts: Mode[] = ["keyword", "semantic", "hybrid"];
