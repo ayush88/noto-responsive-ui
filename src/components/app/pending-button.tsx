@@ -46,11 +46,18 @@ export function PendingButton({
       setState("done");
       if (toastMessage) toast.success(toastMessage);
       setTimeout(() => setState("idle"), 1400);
-    } catch (e) {
+    } catch {
       setState("idle");
       toast.error("Something went wrong. Try again.");
     }
   };
+
+  const label =
+    state === "pending" && pendingLabel
+      ? pendingLabel
+      : state === "done" && successLabel
+        ? successLabel
+        : children;
 
   return (
     <Button
@@ -59,15 +66,17 @@ export function PendingButton({
       size={size}
       onClick={handle}
       disabled={disabled || state !== "idle"}
-      className={cn("relative overflow-hidden transition-transform active:scale-[0.98]", className)}
+      className={cn(
+        "relative overflow-hidden inline-flex items-center justify-center gap-2 leading-none transition-transform active:scale-[0.98] [&_svg]:size-4 [&_svg]:shrink-0",
+        className,
+      )}
     >
-      <span className="inline-flex items-center gap-2">
-        {state === "pending" && <Loader2 className="size-4 animate-spin" aria-hidden />}
-        {state === "done" && showCheck && <Check className="size-4" aria-hidden />}
-        <span>
-          {state === "pending" && pendingLabel ? pendingLabel : state === "done" && successLabel ? successLabel : children}
-        </span>
-      </span>
+      {state === "pending" ? (
+        <Loader2 className="animate-spin" aria-hidden />
+      ) : state === "done" && showCheck ? (
+        <Check aria-hidden />
+      ) : null}
+      {label}
       {state === "done" && (
         <span className="absolute bottom-0 left-0 h-[2px] w-full bg-accent animate-accent-sweep" />
       )}
