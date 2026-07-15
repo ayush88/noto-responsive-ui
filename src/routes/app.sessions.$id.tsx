@@ -53,7 +53,7 @@ export const Route = createFileRoute("/app/sessions/$id")({
   component: SessionDetail,
 });
 
-type ViewMode = "speaker" | "polished" | "timestamp";
+type Density = "comfortable" | "compact";
 
 function SessionDetail() {
   const { session } = Route.useLoaderData() as { session: Session };
@@ -63,7 +63,9 @@ function SessionDetail() {
   const [keyPoints, setKeyPoints] = useState(session.keyPoints);
   const [actions, setActions] = useState(session.actionItems);
   const [regenerating, setRegenerating] = useState(false);
-  const [view, setView] = useState<ViewMode>("speaker");
+  const [density, setDensity] = useState<Density>("comfortable");
+  const [speed, setSpeed] = useState("1");
+
   const [find, setFind] = useState("");
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0.18);
