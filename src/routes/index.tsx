@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh overflow-x-hidden bg-background text-foreground">
       <MarketingHeader />
       <Hero />
       <Triptych />
@@ -51,6 +51,7 @@ function Landing() {
     </div>
   );
 }
+
 
 function MarketingHeader() {
   return (

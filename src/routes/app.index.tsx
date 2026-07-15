@@ -156,8 +156,8 @@ function Library() {
 
       {/* Search + filters */}
       <section className="mt-10">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-3">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-3">
+          <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
             <Input
               value={q}
@@ -166,7 +166,7 @@ function Library() {
               className="pl-9 h-11"
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <SegmentedMode value={mode} onChange={setMode} />
             <Tabs value={tab} onValueChange={(v) => setTab(v as "active" | "bin")}>
               <TabsList>
@@ -176,6 +176,7 @@ function Library() {
             </Tabs>
           </div>
         </div>
+
         {allTags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {allTags.map((t) => {
