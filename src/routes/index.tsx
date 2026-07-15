@@ -133,7 +133,7 @@ function Hero() {
 
 function HeroMock() {
   return (
-    <div className="relative">
+    <div className="relative min-w-0 w-full">
       <div className="absolute -inset-4 -z-10 rounded-3xl bg-surface-2/60 blur-2xl" aria-hidden />
       <div className="rounded-xl border border-hairline bg-card p-5 shadow-sm">
         <div className="flex items-center justify-between">
