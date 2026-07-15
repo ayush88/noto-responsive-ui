@@ -1,13 +1,14 @@
 @import "tailwindcss" source(none);
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Fraunces", ui-serif, Georgia, serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -116,18 +117,27 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
-    letter-spacing: -0.01em;
+    font-weight: 450;
+    font-feature-settings: "cv11", "ss01", "ss03";
+    letter-spacing: -0.005em;
     transition: background-color 200ms ease, color 200ms ease;
   }
-  h1, h2, h3, .font-serif {
-    font-family: var(--font-serif);
-    font-optical-sizing: auto;
-    letter-spacing: -0.02em;
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 680;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+  }
+  .font-serif {
+    /* Legacy hook: kept mapped to sans so old classnames don't break */
+    font-family: var(--font-sans);
+    font-weight: 680;
+    letter-spacing: -0.025em;
   }
   .font-mono, code, kbd {
     font-family: var(--font-mono);
-    font-feature-settings: "tnum";
+    font-feature-settings: "tnum", "ss01";
+    font-weight: 500;
   }
   .tabular {
     font-variant-numeric: tabular-nums;
@@ -135,6 +145,10 @@
   ::selection {
     background: var(--color-accent);
     color: var(--color-accent-foreground);
+  }
+  /* Optical nudge — Lucide icons render 0.5px high next to Inter */
+  button svg[data-lucide], a svg[data-lucide] {
+    transform: translateY(0.5px);
   }
 }
 
@@ -164,6 +178,12 @@
   50% { opacity: 0.55; transform: scale(0.92); }
 }
 .animate-pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+
+@keyframes fab-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 40%, transparent); }
+  50% { box-shadow: 0 0 0 12px color-mix(in oklab, var(--color-accent) 0%, transparent); }
+}
+.animate-fab-pulse { animation: fab-pulse 1.8s ease-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
