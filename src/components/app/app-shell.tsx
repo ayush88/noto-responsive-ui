@@ -145,7 +145,7 @@ function MobileTabBar() {
   const { pathname } = useLocation();
   const tabs = [
     { to: "/app", label: "Library", icon: Library, exact: true },
-    { to: "/app/ask", label: "Ask", icon: Sparkles },
+    { to: "/app/ask", label: "Ask", icon: Sparkles, exact: false },
   ] as const;
 
   return (
